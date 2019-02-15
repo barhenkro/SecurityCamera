@@ -2,10 +2,10 @@ import face_recognition
 
 
 class Face(object):
-    def __init__(self, id):
+    def __init__(self, face_encoding, id):
         self._id = id
         self._name = ""
-        self._face_encodings = []
+        self._face_encodings = [face_encoding]
 
     @property
     def id(self):
