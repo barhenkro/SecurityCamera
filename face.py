@@ -9,7 +9,7 @@ class Face(object):
 
     @property
     def id(self):
-        return self.__id
+        return self._id
 
     @property
     def name(self):
