@@ -3,13 +3,16 @@ from face import Face
 from log_database import LogDatabase
 import cv2
 import face_recognition
+from streamer import Streamer
 
 
 def main():
     # video_capture = cv2.VideoCapture(0)
     face_database = FaceDatabase("faces.txt")
     log_database = LogDatabase('logs.txt')
-    frame = cv2.imread("obama2.jpg")
+    frame = cv2.imread("obama.jpg")
+    streamer = Streamer()
+    Streamer.run()
 
     while True:
         # _, frame = video_capture.read()
@@ -34,6 +37,12 @@ def main():
                         new_face = Face(face_encoding, len(face_database.faces))
                         face_database.add_face(new_face)
                         log_database.log_entrance(new_face.id, frame)
+
+        # mark the faces
+        for face_location in face_locations:
+            (top, right, bottom, left) = face_location
+            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255))
+        streamer.update(frame)
 
 
 if __name__ == '__main__':
