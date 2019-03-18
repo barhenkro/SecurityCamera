@@ -24,9 +24,12 @@ def main():
             face_encoding = face_recognition.face_encodings(frame, known_face_locations=[face_location])[0]
             # unknown face
             if len(face_database.faces) == 0:
+                """
                 new_face = Face(face_encoding, len(face_database.faces))
                 face_database.add_face(new_face)
                 log_database.log_entrance(new_face.id, frame)
+                """
+                register_new_face(face_encoding, frame)
 
             else:
                 for face in face_database.faces:
@@ -37,9 +40,12 @@ def main():
 
                 # unknown face
                 else:
+                    """
                     new_face = Face(face_encoding, len(face_database.faces))
                     face_database.add_face(new_face)
                     log_database.log_entrance(new_face.id, frame)
+                    """
+                    register_new_face(face_encoding, frame)
 
         # mark the faces
         """
@@ -48,6 +54,12 @@ def main():
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255))
         streamer.update(frame)
         """
+
+
+def register_new_face(face_encoding, capture):
+    new_face = Face(face_encoding, len(face_database.faces))
+    face_database.add_face(new_face)
+    log_database.log_entrance(new_face.id, capture)
 
 
 if __name__ == '__main__':
