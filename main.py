@@ -22,13 +22,9 @@ def main():
 
         for face_location in face_locations:
             face_encoding = face_recognition.face_encodings(frame, known_face_locations=[face_location])[0]
+
             # unknown face
-            if len(face_database.faces) == 0:
-                """
-                new_face = Face(face_encoding, len(face_database.faces))
-                face_database.add_face(new_face)
-                log_database.log_entrance(new_face.id, frame)
-                """
+            if len(face_database) == 0:
                 register_new_face(face_encoding, frame)
 
             else:
@@ -39,12 +35,7 @@ def main():
                         break
 
                 # unknown face
-                else:
-                    """
-                    new_face = Face(face_encoding, len(face_database.faces))
-                    face_database.add_face(new_face)
-                    log_database.log_entrance(new_face.id, frame)
-                    """
+                else
                     register_new_face(face_encoding, frame)
 
         # mark the faces
@@ -57,7 +48,7 @@ def main():
 
 
 def register_new_face(face_encoding, capture):
-    new_face = Face(face_encoding, len(face_database.faces))
+    new_face = Face(face_encoding, len(face_database))
     face_database.add_face(new_face)
     log_database.log_entrance(new_face.id, capture)
 
