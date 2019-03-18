@@ -1,6 +1,7 @@
-from face_database import FaceDatabase
+from databases import *
+# from face_database import FaceDatabase
 from face import Face
-from log_database import LogDatabase
+# from log_database import LogDatabase
 import cv2
 import face_recognition
 from streamer import Streamer
@@ -8,8 +9,8 @@ from streamer import Streamer
 
 def main():
     # video_capture = cv2.VideoCapture(0)
-    face_database = FaceDatabase("faces.txt")
-    log_database = LogDatabase('logs.txt')
+    # face_database = FaceDatabase("faces.txt")
+    # log_database = LogDatabase('logs.txt')
     frame = cv2.imread("obama.jpg")
     # streamer = Streamer()
     # Streamer.run()
