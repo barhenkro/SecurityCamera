@@ -4,7 +4,7 @@ import face_recognition
 class Face(object):
     def __init__(self, face_encoding, id):
         self._id = id
-        self._name = ""
+        self._name = None
         self._face_encodings = [face_encoding]
 
     @property

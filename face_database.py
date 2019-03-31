@@ -22,7 +22,7 @@ class FaceDatabase(object):
 
     @property
     def unnamed_faces(self):
-        return [face for face in self._faces if face.name == '']
+        return [face for face in self._faces if face.name is None]
 
     def add_face(self, face):
         self._faces.append(face)
