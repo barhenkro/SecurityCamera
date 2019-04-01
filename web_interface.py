@@ -32,3 +32,8 @@ def show_face(face_id):
     if request.method == 'POST':
         face.name = request.form['name']
     return render_template('face.html', face=face)
+
+
+@_app.route('/faces')
+def list_faces():
+    return render_template('faces.html', faces=face_database.faces)

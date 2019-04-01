@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Faces</title>
+</head>
+
+<body>
+    <div>
+        {% for index in range(len(faces))%}
+        <a href={{ "/face/"+ str(index) }}> {{faces[index].name}} </a>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
