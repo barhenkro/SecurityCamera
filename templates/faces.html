@@ -5,11 +5,11 @@
 </head>
 
 <body>
-    <div>
-        {% for index in range(len(faces))%}
-        <a href={{ "/face/"+ str(index) }}> {{faces[index].name}} </a>
+    <ul>
+        {% for index in range(faces|length)%}
+        <li><a href={{ "/face/"+ index|string }}> {{faces[index].name}} </a></li>
         {% endfor %}
-    </div>
+    </ul>
 </body>
 
 </html>
