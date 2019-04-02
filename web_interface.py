@@ -28,10 +28,9 @@ def get_img_bytes(img):
 
 @_app.route('/face/<int:face_id>', methods=['POST', 'GET'])
 def show_face(face_id):
-    face = face_database[face_id]
     if request.method == 'POST':
-        face.name = request.form['name']
-    return render_template('face.html', face=face)
+        face_database.change_name(face_id, request.form['name'])
+    return render_template('face.html', face=face_database[face_id])
 
 
 @_app.route('/faces')
