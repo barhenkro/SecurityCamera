@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <ul>
+        {% for text, link in list_items%}
+        <li><a href={{ link }}> {{text}} </a></li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
