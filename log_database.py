@@ -21,3 +21,7 @@ class LogDatabase(object):
 
         with open(self._file_name, 'wb') as file_handler:
             pickle.dump(self._logs, file_handler)
+
+    @property
+    def logs(self):
+        return self._logs

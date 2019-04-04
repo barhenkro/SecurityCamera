@@ -35,9 +35,16 @@ def show_face(face_id):
 
 @_app.route('/faces')
 def list_faces():
-    initial_string = url_for('list_faces')+'/'
+    initial_string = url_for('list_faces') + '/'
     items = create_list_items(face_database.faces, lambda face: face.name, initial_string)
     return render_template('list_page.html', title="Faces", list_items=items)
+
+
+@_app.route('/logs')
+def list_logs():
+    initial_string = url_for('list_logs') + '/'
+    items = create_list_items(log_database.logs, lambda log: log.time_string, initial_string)
+    return render_template('list_page.html', title="Logs", list_items=items)
 
 
 def create_list_items(objects_list, naming_function, initial_string):
