@@ -13,8 +13,7 @@ class FaceDatabase(object):
                 self._faces = pickle.load(file_handler)
 
         else:
-            with open(self._file_name, 'wb') as file_handler:
-                pickle.dump(self._faces, file_handler)
+            self._write_data()
 
     @property
     def faces(self):
@@ -26,11 +25,17 @@ class FaceDatabase(object):
 
     def add_face(self, face):
         self._faces.append(face)
-        with open(self._file_name, 'wb') as file_handler:
-            pickle.dump(self._faces, file_handler)
+        self._write_data()
 
     def change_name(self, face_id, name):
         self._faces[face_id].name = name
+        self._write_data()
+
+    def update_last_seen(self, face_id):
+        self._faces[face_id].update_last_seen()
+        self._write_data()
+
+    def _write_data(self):
         with open(self._file_name, 'wb') as file_handler:
             pickle.dump(self._faces, file_handler)
 
