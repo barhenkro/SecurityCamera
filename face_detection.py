@@ -1,5 +1,4 @@
 from databases import *
-from face import Face
 import face_recognition
 
 
@@ -20,17 +19,18 @@ def detect_faces(frame):
             register_new_face(face_encoding, frame)
 
         else:
-            for face in face_database.faces:
-                # known face
+            for face_id in range(len(face_database)):
 
-                if face.compare_face(face_encoding):
+                registered_face = face_database[face_id]
+                # known face
+                if registered_face.compare_face(face_encoding):
                     recognized_face = True
 
-                    if face.time_since_last_seen >= 5:
-                        log_database.log_entrance(face.id, frame)
+                    if registered_face.time_since_last_seen >= 5:
+                        log_database.log_entrance(face_id, frame)
 
-                    if face.time_since_last_seen >= 1:
-                        face_database.update_last_seen(face.id)
+                    if registered_face.time_since_last_seen >= 1:
+                        face_database.update_last_seen(face_id)
 
             # unknown face
             if not recognized_face:
@@ -40,6 +40,6 @@ def detect_faces(frame):
 
 
 def register_new_face(face_encoding, capture):
-    new_face = Face(face_encoding, len(face_database))
-    face_database.add_face(new_face)
-    log_database.log_entrance(new_face.id, capture)
+    face_id = len(face_database)
+    face_database.add_face(face_encoding)
+    log_database.log_entrance(face_id, capture)

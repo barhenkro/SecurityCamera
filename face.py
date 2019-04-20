@@ -3,15 +3,10 @@ import time
 
 
 class Face(object):
-    def __init__(self, face_encoding, id):
-        self._id = id
+    def __init__(self, face_encoding):
         self._name = None
         self._face_encodings = [face_encoding]
         self._last_seen = time.time()
-
-    @property
-    def id(self):
-        return self._id
 
     @property
     def name(self):
