@@ -24,8 +24,8 @@ class FaceDatabase(object):
     def unnamed_faces(self):
         return [face for face in self._faces if face.name is None]
 
-    def add_face(self, face_encoding):
-        self._faces.append(Face(face_encoding))
+    def add_face(self, face_encoding, face_image_path):
+        self._faces.append(Face(face_encoding, face_image_path))
         self._write_data()
 
     def change_name(self, face_id, name):
