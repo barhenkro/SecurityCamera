@@ -16,8 +16,8 @@ class LogDatabase(object):
             with open(self._file_name, 'wb') as file_handler:
                 pickle.dump(self._logs, file_handler)
 
-    def log_entrance(self, face_id, face_capture):
-        self._logs.append(Log(face_id, face_capture))
+    def log_entrance(self, face_id, image_path):
+        self._logs.append(Log(face_id, image_path))
 
         with open(self._file_name, 'wb') as file_handler:
             pickle.dump(self._logs, file_handler)
