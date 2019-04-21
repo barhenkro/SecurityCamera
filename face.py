@@ -3,10 +3,11 @@ import time
 
 
 class Face(object):
-    def __init__(self, face_encoding):
+    def __init__(self, face_encoding, image_path):
         self._name = None
         self._face_encodings = [face_encoding]
         self._last_seen = time.time()
+        self._image_path = image_path
 
     @property
     def name(self):
@@ -15,6 +16,14 @@ class Face(object):
     @name.setter
     def name(self, value):
         self._name = value
+
+    @property
+    def image_path(self):
+        return self._image_path
+
+    @image_path.setter
+    def image_path(self, path):
+        self._image_path = path
 
     @property
     def time_since_last_seen(self):
