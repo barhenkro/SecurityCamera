@@ -24,9 +24,18 @@ class ImageDatabase(object):
             json.dump(self._counter, file_handler)
 
     def save_image(self, image):
-        image_path = "{folder}/{name}.jpg".format(folder=self._folder_name, name=self._counter), image
+        """
+
+        :param image: the image to save
+        :return: the saved image's path
+        """
+        image_path = "{folder}/{name}.jpg".format(folder=self._folder_name, name=self._counter)
         cv2.imwrite(image_path, image)
 
         self._counter += 1
         self._write_data()
         return image_path
+
+
+i = ImageDatabase('images counter.txt', 'images')
+i.save_image(cv2.imread('obama.jpg'))
