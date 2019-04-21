@@ -2,15 +2,15 @@ import time
 
 
 class Log(object):
-    def __init__(self, face_id, face_capture):
-        self.__time = time.localtime()
-        self.__face_id = face_id
-        self._face_capture = face_capture
+    def __init__(self, face_id, image_path):
+        self._time = time.localtime()
+        self._face_id = face_id
+        self._image_path = image_path
 
     @property
     def time(self):
-        return self.__time
+        return self._time
 
     @property
     def time_string(self):
-        return time.asctime(self.__time)
+        return time.asctime(self._time)
