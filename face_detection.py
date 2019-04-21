@@ -16,7 +16,7 @@ def detect_faces(frame):
 
         # unknown face
         if len(face_database) == 0:
-            register_new_face(face_encoding, frame)
+            register_new_face(face_encoding, image_database.save_image(frame))
 
         else:
             for face_id in range(len(face_database)):
@@ -27,19 +27,19 @@ def detect_faces(frame):
                     recognized_face = True
 
                     if registered_face.time_since_last_seen >= 5:
-                        log_database.log_entrance(face_id, frame)
+                        log_database.log_entrance(face_id, image_database.save_image(frame))
 
                     if registered_face.time_since_last_seen >= 1:
                         face_database.update_last_seen(face_id)
 
             # unknown face
             if not recognized_face:
-                register_new_face(face_encoding, frame)
+                register_new_face(face_encoding, image_database.save_image(frame))
 
     return frame
 
 
-def register_new_face(face_encoding, capture):
+def register_new_face(face_encoding, capture_path):
     face_id = len(face_database)
-    face_database.add_face(face_encoding)
-    log_database.log_entrance(face_id, capture)
+    face_database.add_face(face_encoding, capture_path)
+    log_database.log_entrance(face_id, capture_path)
