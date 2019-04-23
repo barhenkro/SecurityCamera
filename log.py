@@ -14,3 +14,11 @@ class Log(object):
     @property
     def time_string(self):
         return time.asctime(self._time)
+
+    @property
+    def image_path(self):
+        return self._image_path
+
+    @property
+    def face_id(self):
+        return self._face_id
