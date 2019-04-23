@@ -40,6 +40,12 @@ def list_faces():
     return render_template('list_page.html', title="Faces", list_items=items)
 
 
+@_app.route('/logs/<int:log_id>')
+def show_log(log_id):
+    face_name = face_database[log_database[log_id].face_id].name
+    return render_template('log.html', log=log_database[log_id], face_name=face_name)
+
+
 @_app.route('/logs')
 def list_logs():
     initial_string = url_for('list_logs') + '/'
