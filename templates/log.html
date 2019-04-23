@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{log.time_string}}</title>
+</head>
+<body>
+
+    name: <a href="{{url_for('show_face', face_id=log.face_id)}}">{{face_name}}</a> <br>
+    date: {{log.time_string}} <br>
+
+    <img src="{{url_for('static',filename=log.image_path)}}">
+
+</body>
+</html>
