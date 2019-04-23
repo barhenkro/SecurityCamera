@@ -25,3 +25,6 @@ class LogDatabase(object):
     @property
     def logs(self):
         return self._logs
+
+    def __getitem__(self, item):
+        return self._logs[item]
