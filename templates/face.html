@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% if face.name %}
-    <title>{{face.name}}</title>
-    {% else %}
-    <title>Unnamed Face</title>
-    {% endif %}
-</head>
+{% extends "base.html" %}
+{% block title %}{{face.name|default('Unnamed',None)}}{% endblock %}
+{% block content %}
+    <form method="post">
+        Name:<br>
+        <input type="text" value ={{face.name}} name="name">
+        <input type="submit" value="change name" >
+    </form>
 
-<body>
-<form method="post">
-    Name:<br>
-    <input type="text" value ={{face.name}} name="name">
-    <input type="submit" value="change name" >
-</form>
-
-<img src="{{url_for('static',filename=face.image_path)}}">
-</body>
-</html>
+    <img src="{{url_for('static',filename=face.image_path)}}">
+{% endblock %}
