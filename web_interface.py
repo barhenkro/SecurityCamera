@@ -11,14 +11,24 @@ def run():
     Thread(target=_app.run, kwargs={'host': '0.0.0.0', 'port': 80, 'debug': False, 'threaded': True}).start()
 
 
-@_app.route('/stream')
-def stream():
+@_app.route('/')
+def home():
+    return render_template("index.html")
+
+
+@_app.route('/stream_feed')
+def stream_feed():
     def get_page():
         while True:
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + get_img_bytes(camera_frame) + b'\r\n')
 
     return Response(get_page(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@_app.route('/stream')
+def stream_page():
+    return render_template('stream.html')
 
 
 def get_img_bytes(img):
