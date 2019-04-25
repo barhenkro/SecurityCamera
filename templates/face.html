@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{face.name|default('Unnamed',None)}}{% endblock %}
 {% block content %}
+    Name: {{face.name}} <br>
     <form method="post">
-        Name:<br>
-        <input type="text" value ={{face.name}} name="name">
+        <input type="text" name="name">
         <input type="submit" value="change name" >
     </form>
 

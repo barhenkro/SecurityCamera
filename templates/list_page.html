@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <ul>
+    <div class="scrollbar">
         {% for text, link in list_items%}
-        <li><a href={{ link }}> {{text}} </a></li>
+        <a href={{ link }}> {{text}} </a>
         {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
