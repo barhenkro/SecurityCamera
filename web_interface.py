@@ -50,6 +50,14 @@ def list_faces():
     return render_template('list_page.html', title="Faces", list_items=items)
 
 
+@_app.route('/unnamed-faces')
+def list_unnamed_faces():
+    initial_string = url_for('list_unnamed_faces') + '/'
+    unnamed_faces_dict = face_database.unnamed_faces
+    items = [(face_id, initial_string + str(face_id)) for face_id in unnamed_faces_dict]
+    return render_template('list_page.html', title="Unnamed Faces", list_items=items)
+
+
 @_app.route('/logs/<int:log_id>')
 def show_log(log_id):
     face_name = face_database[log_database[log_id].face_id].name
