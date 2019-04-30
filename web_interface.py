@@ -13,7 +13,7 @@ def run():
 
 @_app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("index.html", new_faces_counter=len(face_database.unnamed_faces), new_logs_counter=0)
 
 
 @_app.route('/stream_feed')
@@ -52,7 +52,7 @@ def list_faces():
 
 @_app.route('/unnamed-faces')
 def list_unnamed_faces():
-    initial_string = url_for('list_unnamed_faces') + '/'
+    initial_string = url_for('list_faces') + '/'
     unnamed_faces_dict = face_database.unnamed_faces
     items = [(face_id, initial_string + str(face_id)) for face_id in unnamed_faces_dict]
     return render_template('list_page.html', title="Unnamed Faces", list_items=items)
