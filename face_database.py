@@ -22,7 +22,7 @@ class FaceDatabase(object):
 
     @property
     def unnamed_faces(self):
-        return [face for face in self._faces if face.name is None]
+        return {index: self._faces[index] for index in range(self.__len__()) if self._faces[index].name is None}
 
     def add_face(self, face_encoding, face_image_path):
         self._faces.append(Face(face_encoding, face_image_path))
