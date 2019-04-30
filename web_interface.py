@@ -13,7 +13,8 @@ def run():
 
 @_app.route('/')
 def home():
-    return render_template("index.html", new_faces_counter=len(face_database.unnamed_faces), new_logs_counter=0)
+    return render_template("index.html", new_faces_counter=len(face_database.unnamed_faces),
+                           new_logs_counter=len(log_database.unseen_faces))
 
 
 @_app.route('/stream_feed')
@@ -60,6 +61,9 @@ def list_unnamed_faces():
 
 @_app.route('/logs/<int:log_id>')
 def show_log(log_id):
+    if not log_database[log_id].is_seen:
+        log_database.update_is_seen(log_id)
+
     face_name = face_database[log_database[log_id].face_id].name
     return render_template('log.html', log=log_database[log_id], face_name=face_name)
 
@@ -69,6 +73,14 @@ def list_logs():
     initial_string = url_for('list_logs') + '/'
     items = create_list_items(log_database.logs, lambda log: log.time_string, initial_string)
     return render_template('list_page.html', title="Logs", list_items=items)
+
+
+@_app.route('/unnamed-logs')
+def list_unnamed_logs():
+    initial_string = url_for('list_logs') + '/'
+    unseen_logs_dict = log_database.unseen_faces
+    items = [(unseen_logs_dict[log_id].time_string, initial_string + str(log_id)) for log_id in unseen_logs_dict]
+    return render_template('list_page.html', title="Unseen Logs", list_items=items)
 
 
 def create_list_items(objects_list, naming_function, initial_string):
