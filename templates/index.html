@@ -1,3 +1,10 @@
 {% extends "base.html" %}
 {% block title %}Security Camera{% endblock %}
-{% block content %}<h1>Security Camera</h1>{% endblock %}
+{% block content %}
+    <h1>Security Camera</h1>
+    <div class="homebtn">
+        <a href="{{ url_for('list_unnamed_faces')}} " > {{ new_faces_counter }} Unnamed Faces</a>
+        <a href="#">{{ new_logs_counter }} New Logs</a>
+    </div>
+
+{% endblock %}
