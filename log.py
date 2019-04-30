@@ -6,6 +6,7 @@ class Log(object):
         self._time = time.localtime()
         self._face_id = face_id
         self._image_path = image_path
+        self._is_seen = False
 
     @property
     def time(self):
@@ -22,3 +23,11 @@ class Log(object):
     @property
     def face_id(self):
         return self._face_id
+
+    @property
+    def is_seen(self):
+        return self._is_seen
+
+    @is_seen.setter
+    def is_seen(self, value):
+        self._is_seen = value
