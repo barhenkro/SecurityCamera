@@ -18,6 +18,7 @@ class LogDatabase(object):
     def log_entrance(self, face_id, image_path):
         self._logs.append(Log(face_id, image_path))
         self._write_data()
+        return len(self._logs) - 1  # the id of the log
 
     def update_is_seen(self, log_id):
         self._logs[log_id].is_seen = True
