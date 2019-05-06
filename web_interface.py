@@ -3,12 +3,14 @@ import cv2
 from threading import Thread
 from databases import *
 from flask_utils import create_list_items, login_required
+import os
 
 _app = Flask('securitycamera')
 camera_frame = 0
 
 
 def run():
+    _app.secret_key = os.urandom(16)
     Thread(target=_app.run, kwargs={'host': '0.0.0.0', 'port': 80, 'debug': False, 'threaded': True}).start()
 
 
@@ -19,12 +21,12 @@ def home():
                            new_logs_counter=len(log_database.unseen_faces))
 
 
-@_app.route('login', methods=['POST', 'GET'])
+@_app.route('/login', methods=['POST', 'GET'])
 def login():
     message = "you are not logged in"
-    if request.method == 'Post':
+    if request.method == 'POST':
         # password correct
-        if request.form["password"] == 1234:
+        if request.form["password"] == "1234":
             session["logged"] = True
             return redirect(request.args.get('next'))
         # incorrect password
@@ -34,6 +36,7 @@ def login():
 
 
 @_app.route('/stream_feed')
+@login_required
 def stream_feed():
     def get_page():
         while True:
@@ -44,6 +47,7 @@ def stream_feed():
 
 
 @_app.route('/stream')
+@login_required
 def stream_page():
     return render_template('stream.html')
 
@@ -54,6 +58,7 @@ def get_img_bytes(img):
 
 
 @_app.route('/faces/<int:face_id>', methods=['POST', 'GET'])
+@login_required
 def show_face(face_id):
     if request.method == 'POST':
         face_database.change_name(face_id, request.form['name'])
@@ -61,6 +66,7 @@ def show_face(face_id):
 
 
 @_app.route('/faces')
+@login_required
 def list_faces():
     initial_string = url_for('list_faces') + '/'
     items = create_list_items(face_database.faces, lambda face: face.name, initial_string)
@@ -68,6 +74,7 @@ def list_faces():
 
 
 @_app.route('/unnamed-faces')
+@login_required
 def list_unnamed_faces():
     initial_string = url_for('list_faces') + '/'
     unnamed_faces_dict = face_database.unnamed_faces
@@ -76,6 +83,7 @@ def list_unnamed_faces():
 
 
 @_app.route('/logs/<int:log_id>')
+@login_required
 def show_log(log_id):
     if not log_database[log_id].is_seen:
         log_database.update_is_seen(log_id)
@@ -85,6 +93,7 @@ def show_log(log_id):
 
 
 @_app.route('/logs')
+@login_required
 def list_logs():
     initial_string = url_for('list_logs') + '/'
     items = create_list_items(log_database.logs, lambda log: log.time_string, initial_string)
@@ -92,6 +101,7 @@ def list_logs():
 
 
 @_app.route('/unnamed-logs')
+@login_required
 def list_unnamed_logs():
     initial_string = url_for('list_logs') + '/'
     unseen_logs_dict = log_database.unseen_faces
