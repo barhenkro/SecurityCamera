@@ -1,7 +1,8 @@
-from flask import Flask, Response, render_template, request, url_for
+from flask import Flask, Response, render_template, request, url_for, session, redirect
 import cv2
 from threading import Thread
 from databases import *
+from flask_utils import create_list_items, login_required
 
 _app = Flask('securitycamera')
 camera_frame = 0
@@ -12,9 +13,24 @@ def run():
 
 
 @_app.route('/')
+@login_required
 def home():
     return render_template("index.html", new_faces_counter=len(face_database.unnamed_faces),
                            new_logs_counter=len(log_database.unseen_faces))
+
+
+@_app.route('login', methods=['POST', 'GET'])
+def login():
+    message = "you are not logged in"
+    if request.method == 'Post':
+        # password correct
+        if request.form["password"] == 1234:
+            session["logged"] = True
+            return redirect(request.args.get('next'))
+        # incorrect password
+        message = "incorrect password"
+
+    return render_template("login.html", message=message)
 
 
 @_app.route('/stream_feed')
@@ -81,8 +97,3 @@ def list_unnamed_logs():
     unseen_logs_dict = log_database.unseen_faces
     items = [(unseen_logs_dict[log_id].time_string, initial_string + str(log_id)) for log_id in unseen_logs_dict]
     return render_template('list_page.html', title="Unseen Logs", list_items=items)
-
-
-def create_list_items(objects_list, naming_function, initial_string):
-    for index in range(len(objects_list)):
-        yield (naming_function(objects_list[index]), initial_string + str(index))
