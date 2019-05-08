@@ -1,6 +1,3 @@
-$color: #000;
-$color-bg: #c0c0c0;
-
 @import url(http://weloveiconfonts.com/api/?family=fontawesome);
 
 
@@ -23,8 +20,8 @@ html {
 }
 
 body {
-	background: $color-bg;
-	color: $color;
+	background: #c0c0c0;
+	color: #000;
   font-family: 'Varela Round', sans-serif;
   line-height: 1.5;
   margin: 0;
