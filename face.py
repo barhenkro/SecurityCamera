@@ -3,8 +3,8 @@ import time
 
 
 class Face(object):
-    def __init__(self, face_encoding, image_path):
-        self._name = None
+    def __init__(self, face_encoding, image_path, name):
+        self._name = name
         self._face_encodings = [face_encoding]
         self._last_seen = time.time()
         self._image_path = image_path
