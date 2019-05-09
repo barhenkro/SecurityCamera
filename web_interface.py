@@ -3,6 +3,7 @@ import cv2
 from threading import Thread
 from databases import *
 from flask_utils import create_list_items, login_required
+from detection_utils import encode_face
 import os
 
 _app = Flask('securitycamera')
@@ -63,6 +64,30 @@ def show_face(face_id):
     if request.method == 'POST':
         face_database.change_name(face_id, request.form['name'])
     return render_template('face.html', face=face_database[face_id])
+
+
+@_app.route('/add_face', methods=['GET', 'POST'])
+@login_required
+def add_face():
+    if request.method == 'POST':
+
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            return redirect(request.url)
+
+        uploaded_file = request.files['file']
+
+        # empty file name
+        if uploaded_file.filename == '':
+            return redirect(request.url)
+
+        # every thing is right
+        if uploaded_file and ImageDatabase.is_allowed(uploaded_file.filename):
+            image_path = image_database.save_image(uploaded_file)
+            face_database.add_face(encode_face(image_path), image_path, name=request.form['face_name'])
+            return redirect(request.url)
+
+    return render_template('new_face.html')
 
 
 @_app.route('/faces')
