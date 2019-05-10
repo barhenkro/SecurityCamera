@@ -32,6 +32,8 @@ def login():
         # incorrect password
         message = "incorrect password"
 
+    if session["logged"]:
+        return redirect(url_for('home'))
     return render_template("login.html", message=message)
 
 
