@@ -1,4 +1,5 @@
 from databases import *
+from detection_utils import crop_face
 import face_recognition
 
 
@@ -17,7 +18,7 @@ class FaceDetector(object):
         face_locations = face_recognition.face_locations(frame)
 
         for face_location in face_locations:
-            face_capture = FaceDetector.crop_face(frame, face_location)
+            face_capture = crop_face(frame, face_location)
             face_encoding = face_recognition.face_encodings(frame, known_face_locations=[face_location])[0]
 
             # unknown face
@@ -55,7 +56,3 @@ class FaceDetector(object):
         for notifier in self._notifiers:
             notifier.notify(log_id)
 
-    @staticmethod
-    def crop_face(frame, face_location):
-        top, right, bottom, left = face_location
-        return frame[top:bottom + 1, left:right + 1]
