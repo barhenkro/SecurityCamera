@@ -85,8 +85,10 @@ def add_face():
 
         # every thing is right
         if uploaded_file and ImageDatabase.is_allowed(uploaded_file.filename):
+            uploaded_file = ImageDatabase.convert_to_numpy_image(uploaded_file)
             image_path = image_database.save_image(uploaded_file)
-            face_database.add_face(encode_face(image_path), image_path, name=request.form['face_name'])
+            full_image_path = os.path.join(ImageDatabase.ROOT_FOLDER_NAME, image_path)
+            face_database.add_face(encode_face(full_image_path), image_path, name=request.form['face_name'])
             return redirect(request.url)
 
     return render_template('new_face.html')
