@@ -4,9 +4,11 @@ from threading import Thread
 from databases import *
 from flask_utils import create_list_items, login_required
 from detection_utils import encode_face
+from face_detector import FaceDetector
 import os
 
 _app = Flask('securitycamera')
+_face_detector = FaceDetector(register_logs=False)
 camera_frame = 0
 
 
@@ -86,9 +88,12 @@ def add_face():
         # every thing is right
         if uploaded_file and ImageDatabase.is_allowed(uploaded_file.filename):
             uploaded_file = ImageDatabase.convert_to_numpy_image(uploaded_file)
+            """
             image_path = image_database.save_image(uploaded_file)
             full_image_path = os.path.join(ImageDatabase.ROOT_FOLDER_NAME, image_path)
             face_database.add_face(encode_face(full_image_path), image_path, name=request.form['face_name'])
+            """
+            _face_detector.detect_faces(uploaded_file)
             return redirect(request.url)
 
     return render_template('new_face.html')
