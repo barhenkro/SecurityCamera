@@ -44,6 +44,12 @@ class FaceDatabase(object):
         with open(self._file_name, 'wb') as file_handler:
             pickle.dump(self._faces, file_handler)
 
+    def compare_all_faces(self, face_encoding):
+        for face in self._faces:
+            if face.compare_face(face_encoding):
+                return True
+        return False
+
     def __len__(self):
         return len(self._faces)
 

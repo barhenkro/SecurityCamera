@@ -12,11 +12,15 @@ def crop_face(frame, face_location):
     return frame[top:bottom + 1, left:right + 1]
 
 
-def encode_face(image_path):
+def find_face(image):
     """
 
-    :param image_path: path to an image which contains a face
-    :return: face encoding
+    :param image:  an image which contains a face
+    :return: (face location, face encoding) only if there is one face, otherwise return None
     """
-    image = face_recognition.load_image_file(image_path)
-    return face_recognition.face_encodings(image)[0]
+    face_location = face_encoding = None
+    locations = face_recognition.face_locations(image)
+    if len(locations) == 1:
+        face_location = locations[0]
+        face_encoding = face_recognition.face_encodings(image, known_face_locations=[face_location])[0]
+    return face_location, face_encoding
