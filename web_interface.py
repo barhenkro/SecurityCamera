@@ -1,4 +1,4 @@
-from flask import Flask, Response, render_template, request, url_for, session, redirect
+from flask import Flask, Response, render_template, request, url_for, session, redirect, flash
 import cv2
 from threading import Thread
 from databases import *
@@ -81,19 +81,29 @@ def add_face():
 
         # empty file name
         if uploaded_file.filename == '':
+            flash("you didn't chose a file")
             return redirect(request.url)
 
         # every thing is right
         if uploaded_file and ImageDatabase.is_allowed(uploaded_file.filename):
+
             uploaded_file = ImageDatabase.convert_to_numpy_image(uploaded_file)
-            face_location, face_encoding = detection_utils.find_face_location(uploaded_file)
+            face_location, face_encoding = detection_utils.find_face(uploaded_file)
 
             # if there is one face in the picture
             if face_location:
                 if not face_database.compare_all_faces(face_encoding):
                     image_path = image_database.save_image(detection_utils.crop_face(uploaded_file, face_location))
                     face_database.add_face(face_encoding, image_path, name=request.form['face_name'])
+                    flash("face was uploaded successfully")
 
+                else:
+                    flash("face already exists in the system")
+            else:
+                flash("picture should contain exactly one face")
+
+        else:
+            flash("file should be a picture")
 
             # image_path = image_database.save_image(uploaded_file)
             # full_image_path = os.path.join(ImageDatabase.ROOT_FOLDER_NAME, image_path)
