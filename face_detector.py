@@ -33,7 +33,7 @@ class FaceDetector(object):
                     if registered_face.compare_face(face_encoding):
                         recognized_face = True
 
-                        if registered_face.time_since_last_seen >= 5:
+                        if registered_face.time_since_last_seen >= 8:
                             log_id = log_database.log_entrance(face_id, image_database.save_image(face_capture))
                             self.notify(log_id)
 
