@@ -1,6 +1,7 @@
 from multiprocessing import Process
 import json
 from face_detector_factory import create_face_detector
+from numpy import ndarray
 
 
 class DetectionProcess(Process):
@@ -14,7 +15,9 @@ class DetectionProcess(Process):
         self.__face_detector = create_face_detector(settings)
 
     def run(self):
-        self.__connection.send('ready')
-        frame = self.__connection.recv()
         while True:
-            self.__face_detector.detect_faces(frame)
+            self.__connection.send('ready')
+            frame = self.__connection.recv()
+
+            if frame is ndarray:
+                self.__face_detector.detect_faces(frame)

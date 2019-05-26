@@ -12,6 +12,7 @@ class Camera(object):
     def capture(self):
         for frame in self._camera.capture_continuous(self._output, format='bgr'):
             self._frame = frame.array
+            yield self._frame
             self._output.truncate()
             self._output.seek(0)
 

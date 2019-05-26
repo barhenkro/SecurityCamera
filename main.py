@@ -6,6 +6,7 @@ from threading import Thread
 
 
 def main():
+    web_interface.run()
     child_connection, parent_connection = Pipe()
     detection_process = DetectionProcess(child_connection)
     detection_process.start()
@@ -14,13 +15,14 @@ def main():
         Thread(target=detect_frame, args=(camera, parent_connection)).start()
 
         for frame in camera.capture():
-            web_interface.camera_frame = camera.frame
+            web_interface.camera_frame = frame
 
 
 def detect_frame(camera, connection):
     while True:
         connection.recv()
-        connection.send(camera.frame)
+        frame = camera.frame
+        connection.send(frame)
 
 
 if __name__ == '__main__':
