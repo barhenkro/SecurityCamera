@@ -1,4 +1,4 @@
-from databases import *
+from databases import face_database_instance, log_database_instance, image_database_instance
 from detection_utils import crop_face
 import face_recognition
 
@@ -22,37 +22,36 @@ class FaceDetector(object):
             face_encoding = face_recognition.face_encodings(frame, known_face_locations=[face_location])[0]
 
             # unknown face
-            if len(face_database) == 0:
-                self.register_new_face(face_encoding, image_database.save_image(face_capture))
+            if len(face_database_instance) == 0:
+                self.register_new_face(face_encoding, image_database_instance.save_image(face_capture))
 
             else:
-                for face_id in range(len(face_database)):
+                for face_id in range(len(face_database_instance)):
 
-                    registered_face = face_database[face_id]
+                    registered_face = face_database_instance[face_id]
                     # known face
                     if registered_face.compare_face(face_encoding):
                         recognized_face = True
 
                         if registered_face.time_since_last_seen >= 8:
-                            log_id = log_database.log_entrance(face_id, image_database.save_image(face_capture))
+                            log_id = log_database_instance.log_entrance(face_id, image_database_instance.save_image(face_capture))
                             self.notify(log_id)
 
                         if registered_face.time_since_last_seen >= 1:
-                            face_database.update_last_seen(face_id)
+                            face_database_instance.update_last_seen(face_id)
 
                 # unknown face
                 if not recognized_face:
-                    self.register_new_face(face_encoding, image_database.save_image(face_capture))
+                    self.register_new_face(face_encoding, image_database_instance.save_image(face_capture))
 
         return frame
 
     def register_new_face(self, face_encoding, capture_path):
-        face_id = len(face_database)
-        face_database.add_face(face_encoding, capture_path)
-        log_id = log_database.log_entrance(face_id, capture_path)
+        face_id = len(face_database_instance)
+        face_database_instance.add_face(face_encoding, capture_path)
+        log_id = log_database_instance.log_entrance(face_id, capture_path)
         self.notify(log_id)
 
     def notify(self, log_id):
         for notifier in self._notifiers:
             notifier.notify(log_id)
-

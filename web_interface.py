@@ -1,7 +1,8 @@
 from flask import Flask, Response, render_template, request, url_for, session, redirect, flash
 import cv2
 from threading import Thread
-from databases import *
+from databases import face_database_instance, log_database_instance, image_database_instance
+from databases.image_database import ImageDatabase
 from flask_utils import create_list_items, login_required
 import detection_utils
 import os
@@ -18,8 +19,8 @@ def run():
 @_app.route('/')
 @login_required
 def home():
-    return render_template("index.html", new_faces_counter=len(face_database.unnamed_faces),
-                           new_logs_counter=len(log_database.unseen_faces))
+    return render_template("index.html", new_faces_counter=len(face_database_instance.unnamed_faces),
+                           new_logs_counter=len(log_database_instance.unseen_faces))
 
 
 @_app.route('/login', methods=['POST', 'GET'])
@@ -64,8 +65,8 @@ def get_img_bytes(img):
 @login_required
 def show_face(face_id):
     if request.method == 'POST':
-        face_database.change_name(face_id, request.form['name'])
-    return render_template('face.html', face=face_database[face_id])
+        face_database_instance.change_name(face_id, request.form['name'])
+    return render_template('face.html', face=face_database_instance[face_id])
 
 
 @_app.route('/add_face', methods=['GET', 'POST'])
@@ -92,9 +93,10 @@ def add_face():
 
             # if there is one face in the picture
             if face_location:
-                if not face_database.compare_all_faces(face_encoding):
-                    image_path = image_database.save_image(detection_utils.crop_face(uploaded_file, face_location))
-                    face_database.add_face(face_encoding, image_path, name=request.form['face_name'])
+                if not face_database_instance.compare_all_faces(face_encoding):
+                    image_path = image_database_instance.save_image(
+                        detection_utils.crop_face(uploaded_file, face_location))
+                    face_database_instance.add_face(face_encoding, image_path, name=request.form['face_name'])
                     flash("face was uploaded successfully")
 
                 else:
@@ -117,7 +119,7 @@ def add_face():
 @login_required
 def list_faces():
     initial_string = url_for('list_faces') + '/'
-    items = create_list_items(face_database.faces, lambda face: face.name, initial_string)
+    items = create_list_items(face_database_instance.faces, lambda face: face.name, initial_string)
     return render_template('list_page.html', title="Faces", list_items=items)
 
 
@@ -125,7 +127,7 @@ def list_faces():
 @login_required
 def list_unnamed_faces():
     initial_string = url_for('list_faces') + '/'
-    unnamed_faces_dict = face_database.unnamed_faces
+    unnamed_faces_dict = face_database_instance.unnamed_faces
     items = [(face_id, initial_string + str(face_id)) for face_id in unnamed_faces_dict]
     return render_template('list_page.html', title="Unnamed Faces", list_items=items)
 
@@ -133,18 +135,18 @@ def list_unnamed_faces():
 @_app.route('/logs/<int:log_id>')
 @login_required
 def show_log(log_id):
-    if not log_database[log_id].is_seen:
-        log_database.update_is_seen(log_id)
+    if not log_database_instance[log_id].is_seen:
+        log_database_instance.update_is_seen(log_id)
 
-    face_name = face_database[log_database[log_id].face_id].name
-    return render_template('log.html', log=log_database[log_id], face_name=face_name)
+    face_name = face_database_instance[log_database_instance[log_id].face_id].name
+    return render_template('log.html', log=log_database_instance[log_id], face_name=face_name)
 
 
 @_app.route('/logs')
 @login_required
 def list_logs():
     initial_string = url_for('list_logs') + '/'
-    items = create_list_items(log_database.logs, lambda log: log.time_string, initial_string)
+    items = create_list_items(log_database_instance.logs, lambda log: log.time_string, initial_string)
     return render_template('list_page.html', title="Logs", list_items=items)
 
 
@@ -152,6 +154,6 @@ def list_logs():
 @login_required
 def list_unnamed_logs():
     initial_string = url_for('list_logs') + '/'
-    unseen_logs_dict = log_database.unseen_faces
+    unseen_logs_dict = log_database_instance.unseen_faces
     items = [(unseen_logs_dict[log_id].time_string, initial_string + str(log_id)) for log_id in unseen_logs_dict]
     return render_template('list_page.html', title="Unseen Logs", list_items=items)

@@ -1,33 +1,17 @@
-import json
+from database import Database
 import os
 import cv2
 import tempfile
-import os
 
 
-class ImageDatabase(object):
+class ImageDatabase(Database):
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
     ROOT_FOLDER_NAME = 'static'
     FOLDER_NAME = 'images'
     FOLDER_PATH = os.path.join(ROOT_FOLDER_NAME, FOLDER_NAME)
 
     def __init__(self, file_name):
-        self._counter = 0
-        self._file_name = file_name
-
-        if os.path.exists(self._file_name):
-            with open(self._file_name, 'rb') as file_handler:
-                self._counter = json.load(file_handler)
-
-        else:
-            self._write_data()
-
-        if not os.path.isdir(ImageDatabase.FOLDER_PATH):
-            os.mkdir(ImageDatabase.FOLDER_PATH)
-
-    def _write_data(self):
-        with open(self._file_name, 'wb') as file_handler:
-            json.dump(self._counter, file_handler)
+        super(ImageDatabase, self).__init__(file_name, initial_data=0, serialization_type='json')
 
     def save_image(self, image):
         """
@@ -35,12 +19,12 @@ class ImageDatabase(object):
         :param image: the image to save
         :return: the saved image's path
         """
-        image_name = "{}.jpg".format(self._counter)
+        image_name = "{}.jpg".format(self._data)
         image_path = os.path.join(ImageDatabase.FOLDER_PATH, image_name)
 
         cv2.imwrite(image_path, image)
 
-        self._counter += 1
+        self._data += 1
         self._write_data()
 
         return os.path.join(ImageDatabase.FOLDER_NAME, image_name)
