@@ -1,21 +1,26 @@
-import cv2
-from face_detector_factory import create_face_detector
 import web_interface
-import json
 from camera import Camera
+from detection_process import DetectionProcess
+from multiprocessing import Pipe
+from threading import Thread
 
 
 def main():
-    web_interface.run()
-
-    with open('settings.json', 'rb') as file_handler:
-        settings = json.load(file_handler)
-
-    face_detector = create_face_detector(settings)
+    child_connection, parent_connection = Pipe()
+    detection_process = DetectionProcess(child_connection)
+    detection_process.start()
 
     with Camera() as camera:
+        Thread(target=detect_frame, args=(camera, parent_connection)).start()
+
         for frame in camera.capture():
-            web_interface.camera_frame = face_detector.detect_faces(frame)
+            web_interface.camera_frame = camera.frame
+
+
+def detect_frame(camera, connection):
+    while True:
+        connection.recv()
+        connection.send(camera.frame)
 
 
 if __name__ == '__main__':
