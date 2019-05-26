@@ -7,12 +7,17 @@ class Camera(object):
         self._camera_attributes = kwargs
         self._camera = None
         self._output = None
+        self._frame = 0
 
     def capture(self):
         for frame in self._camera.capture_continuous(self._output, format='bgr'):
-            yield frame.array
+            self._frame = frame.array
             self._output.truncate()
             self._output.seek(0)
+
+    @property
+    def frame(self):
+        return self._frame
 
     def __enter__(self):
         self._camera = PiCamera(**self._camera_attributes)
