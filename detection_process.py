@@ -19,5 +19,5 @@ class DetectionProcess(Process):
             self.__connection.send('ready')
             frame = self.__connection.recv()
 
-            if frame is ndarray:
+            if type(frame) is ndarray:
                 self.__face_detector.detect_faces(frame)
