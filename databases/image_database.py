@@ -13,6 +13,9 @@ class ImageDatabase(Database):
     def __init__(self, file_name):
         super(ImageDatabase, self).__init__(file_name, initial_data=0, serialization_type='json')
 
+        if not os.path.isdir(ImageDatabase.FOLDER_PATH):
+            os.mkdir(ImageDatabase.FOLDER_PATH)
+
     def save_image(self, image):
         """
 
