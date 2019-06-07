@@ -29,3 +29,11 @@ class Database(object):
     def _read_data(self):
         with open(self._file_name, 'rb') as file_handler:
             self._data = self._serialization_module.load(file_handler)
+
+    def __len__(self):
+        self._read_data()
+        return len(self._data)
+
+    def __getitem__(self, item):
+        self._read_data()
+        return self._data[item]

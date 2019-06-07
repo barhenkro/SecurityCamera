@@ -26,7 +26,3 @@ class LogDatabase(Database):
     def unseen_faces(self):
         self._read_data()
         return {index: self._data[index] for index in range(len(self._data)) if not self._data[index].is_seen}
-
-    def __getitem__(self, item):
-        self._read_data()
-        return self._data[item]

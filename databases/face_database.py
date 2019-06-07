@@ -42,11 +42,3 @@ class FaceDatabase(Database):
             if face.compare_face(face_encoding):
                 return True
         return False
-
-    def __len__(self):
-        self._read_data()
-        return len(self._data)
-
-    def __getitem__(self, item):
-        self._read_data()
-        return self._data[item]
