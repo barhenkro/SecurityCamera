@@ -64,6 +64,9 @@ def get_img_bytes(img):
 @_app.route('/faces/<int:face_id>', methods=['POST', 'GET'])
 @login_required
 def show_face(face_id):
+    if face_id >= len(face_database_instance):
+        return render_template('error.html', not_found="Face"), 404
+
     if request.method == 'POST':
         face_database_instance.change_name(face_id, request.form['name'])
     return render_template('face.html', face=face_database_instance[face_id])
@@ -135,6 +138,9 @@ def list_unnamed_faces():
 @_app.route('/logs/<int:log_id>')
 @login_required
 def show_log(log_id):
+    if log_id >= len(log_database_instance):
+        return render_template('error.html', not_found="Log"), 404
+
     if not log_database_instance[log_id].is_seen:
         log_database_instance.update_is_seen(log_id)
 
@@ -157,3 +163,8 @@ def list_unnamed_logs():
     unseen_logs_dict = log_database_instance.unseen_faces
     items = [(unseen_logs_dict[log_id].time_string, initial_string + str(log_id)) for log_id in unseen_logs_dict]
     return render_template('list_page.html', title="Unseen Logs", list_items=items)
+
+
+@_app.errorhandler(404)
+def not_found(eror):
+    return render_template('error.html', not_found="Page"), 404
