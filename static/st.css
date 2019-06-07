@@ -39,3 +39,35 @@
     display: block;
     border: 1px solid black;
 }
+
+.add_face input[class="field"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.add_face input[type=submit] {
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add_face input[type=submit]:hover {
+  background-color: #262626;
+}
+
+form[class="add_face"]{
+  font-size: 25px;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
