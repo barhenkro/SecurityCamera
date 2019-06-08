@@ -3,11 +3,21 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='st.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="sidenav">
         <a href="{{url_for('home')}}">Home</a>
-        <a href="{{url_for('list_faces')}}">Faces</a>
+
+        <button class="dropdown-btn">Faces <i class="fa fa-caret-down"></i> </button>
+        <div class="dropdown-container">
+
+            <a href="{{url_for('list_faces')}}">List</a>
+
+            <a href="{{url_for('add_face')}}">Add Face</a>
+
+        </div>
+
         <a href="{{url_for('list_logs')}}">Logs</a>
         <a href="{{url_for('stream_page')}}">Stream</a>
     </div>
@@ -15,6 +25,7 @@
     <div class="main">
         {% block content %}{% endblock %}
     </div>
+    <script src="{{url_for('static', filename='scripts.js')}}"></script>
 
 </body>
 </html>
