@@ -26,11 +26,19 @@ def home():
 @_app.route('/login', methods=['POST', 'GET'])
 def login():
     message = "you are not logged in"
+    if 'logged' not in session:
+        session['logged'] = False
+
     if request.method == 'POST':
         # password correct
         if request.form["password"] == "1234":
             session["logged"] = True
-            return redirect(request.args.get('next'))
+            next_site = request.args.get('next')
+            # entered directly to login
+            if next_site is None:
+                next_site = url_for('home')
+
+            return redirect(next_site)
         # incorrect password
         message = "incorrect password"
 
