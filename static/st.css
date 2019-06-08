@@ -1,7 +1,3 @@
-body {
-  font-family: "Times New Roman", Times, serif;
-}
-
 .sidenav {
   height: 100%; /* Full-height: remove this if you want "auto" height */
   width: 160px; /* Set the width of the sidebar */
@@ -15,6 +11,7 @@ body {
 }
 
 .sidenav a, .dropdown-btn{
+  font-family: "Lato", sans-serif;
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
