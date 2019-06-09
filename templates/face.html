@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% block title %}{{face.name|default('Unnamed',None)}}{% endblock %}
 {% block content %}
-    Name: {{face.name}} <br>
-    <form method="post">
-        <input type="text" name="name">
-        <input type="submit" value="change name" >
-    </form>
+    <div class="styled-info">
+        Name: {{face.name}} <br>
+        <form method="post">
+            <input type="text" name="name">
+            <input type="submit" value="change name" >
+        </form>
 
-    <img src="{{url_for('static',filename=face.image_path)}}">
+        <img src="{{url_for('static',filename=face.image_path)}}">
+
+    </div>
 {% endblock %}
