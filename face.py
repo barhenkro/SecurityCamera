@@ -8,6 +8,7 @@ class Face(object):
         self._face_encodings = [face_encoding]
         self._last_seen = time.time()
         self._image_path = image_path
+        self._logs_id = []
 
     @property
     def name(self):
@@ -28,6 +29,13 @@ class Face(object):
     @property
     def time_since_last_seen(self):
         return time.time() - self._last_seen
+
+    @property
+    def logs_id(self):
+        return self._logs_id
+
+    def register_log(self, log_id):
+        self._logs_id.append(log_id)
 
     def update_last_seen(self):
         self._last_seen = time.time()
