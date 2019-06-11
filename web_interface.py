@@ -173,6 +173,15 @@ def list_unnamed_logs():
     return render_template('list_page.html', title="Unseen Logs", list_items=items)
 
 
+@_app.route('/face-logs/<int:face_id>')
+def list_logs_by_face_id(face_id):
+    face = face_database_instance[face_id]
+    logs_id = face.logs_id
+    logs = log_database_instance[logs_id]
+    items = [(logs[log_id].time_string, url_for('show_log', log_id=log_id)) for log_id in logs_id]
+    return render_template('list_page.html', title="Face's Logs", list_items=items)
+
+
 @_app.errorhandler(404)
 def not_found(eror):
     return render_template('error.html', not_found="Page"), 404
