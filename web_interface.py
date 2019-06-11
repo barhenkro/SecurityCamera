@@ -77,7 +77,7 @@ def show_face(face_id):
 
     if request.method == 'POST':
         face_database_instance.change_name(face_id, request.form['name'])
-    return render_template('face.html', face=face_database_instance[face_id])
+    return render_template('face.html', face=face_database_instance[face_id], face_id=face_id)
 
 
 @_app.route('/add_face', methods=['GET', 'POST'])
@@ -175,6 +175,9 @@ def list_unnamed_logs():
 
 @_app.route('/face-logs/<int:face_id>')
 def list_logs_by_face_id(face_id):
+    if face_id >= len(face_database_instance):
+        return render_template('error.html', not_found="Face"), 404
+    
     face = face_database_instance[face_id]
     logs_id = face.logs_id
     logs = log_database_instance[logs_id]

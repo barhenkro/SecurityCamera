@@ -2,13 +2,13 @@
 {% block title %}{{face.name|default('Unnamed',None)}}{% endblock %}
 {% block content %}
     <div class="styled-info">
+        <img src="{{url_for('static',filename=face.image_path)}}"> <br>
+        <a href="{{url_for('list_logs_by_face_id', face_id=face_id)}}">Watch Logs</a> <br>
         Name: {{face.name}} <br>
         <form method="post">
             <input type="text" name="name">
             <input type="submit" value="change name" >
         </form>
-
-        <img src="{{url_for('static',filename=face.image_path)}}">
 
     </div>
 {% endblock %}
