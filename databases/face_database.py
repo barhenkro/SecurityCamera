@@ -42,3 +42,8 @@ class FaceDatabase(Database):
             if face.compare_face(face_encoding):
                 return True
         return False
+
+    def register_log(self, face_id, log_id):
+        self._read_data()
+        self._data[face_id].register_log(log_id)
+        self._write_data()
