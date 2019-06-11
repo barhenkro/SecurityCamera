@@ -14,7 +14,6 @@ class FaceDetector(object):
         :param frame: a frame to detect faces from
         :return: frame with marked faces
         """
-        recognized_face = False
         face_locations = face_recognition.face_locations(frame)
 
         for face_location in face_locations:
@@ -26,6 +25,7 @@ class FaceDetector(object):
                 self.register_new_face(face_encoding, image_database_instance.save_image(face_capture))
 
             else:
+                recognized_face = False
                 for face_id in range(len(face_database_instance)):
 
                     registered_face = face_database_instance[face_id]
@@ -33,8 +33,10 @@ class FaceDetector(object):
                     if registered_face.compare_face(face_encoding):
                         recognized_face = True
 
-                        if registered_face.time_since_last_seen >= 8:
-                            log_id = log_database_instance.log_entrance(face_id, image_database_instance.save_image(face_capture))
+                        if registered_face.time_since_last_seen >= 60:
+                            log_id = log_database_instance.log_entrance(face_id, image_database_instance.save_image(
+                                face_capture))
+                            face_database_instance.register_log(face_id, log_id)
                             self.notify(log_id)
 
                         if registered_face.time_since_last_seen >= 1:
@@ -50,6 +52,7 @@ class FaceDetector(object):
         face_id = len(face_database_instance)
         face_database_instance.add_face(face_encoding, capture_path)
         log_id = log_database_instance.log_entrance(face_id, capture_path)
+        face_database_instance.register_log(face_id, log_id)
         self.notify(log_id)
 
     def notify(self, log_id):
