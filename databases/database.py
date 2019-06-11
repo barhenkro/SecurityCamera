@@ -35,5 +35,15 @@ class Database(object):
         return len(self._data)
 
     def __getitem__(self, item):
+        """
+        return an item by his id
+        :param item: id/s of an object/s in the database
+        :return: the object/s
+        """
         self._read_data()
-        return self._data[item]
+
+        if type(item) is int:
+            return self._data[item]
+
+        elif type(item) is list:
+            return [self._data[index] for index in item]
