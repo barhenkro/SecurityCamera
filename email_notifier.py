@@ -25,7 +25,7 @@ class EmailNotifier(Notifier):
 </html>
 """
 
-    def __init__(self, sender, receiver, smtp_server, password):
+    def __init__(self, sender, receivers, smtp_server, password):
         """
 
         :param sender:  the sender's email
@@ -37,7 +37,7 @@ class EmailNotifier(Notifier):
         self._server.login(sender, password)
 
         self._sender = sender
-        self._receiver = receiver
+        self._receivers = receivers
 
     def notify(self, log_id):
         # getting data about the log
@@ -68,9 +68,9 @@ class EmailNotifier(Notifier):
         message = MIMEMultipart("alternative")
         message["Subject"] = "New Log"
         message["From"] = self._sender
-        message["To"] = self._receiver
+        message["To"] = ",".join(self._receivers)
         message.attach(part1)
         message.attach(part2)
         message.attach(image_part)
 
-        self._server.sendmail(self._sender, self._receiver, message.as_string())
+        self._server.sendmail(self._sender, self._receivers, message.as_string())
