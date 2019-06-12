@@ -3,8 +3,11 @@ from picamera import PiCamera
 
 
 class Camera(object):
-    def __init__(self, **kwargs):
-        self._camera_attributes = kwargs
+    def __init__(self, frame_rate, rotation, resolution):
+        self._frame_rate = frame_rate
+        self._rotation = rotation
+        self._resolution = resolution
+
         self._camera = None
         self._output = None
         self._frame = 0
@@ -21,9 +24,10 @@ class Camera(object):
         return self._frame
 
     def __enter__(self):
-        self._camera = PiCamera(**self._camera_attributes)
-        self._camera.resolution = (640, 480)
-        self._camera.framerate = 32
+        self._camera = PiCamera()
+        self._camera.resolution = self._resolution
+        self._camera.rotation = self._rotation
+        self._camera.framerate = self._frame_rate
 
         self._output = PiRGBArray(self._camera)
 
