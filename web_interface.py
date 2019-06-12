@@ -177,7 +177,7 @@ def list_unnamed_logs():
 def list_logs_by_face_id(face_id):
     if face_id >= len(face_database_instance):
         return render_template('error.html', not_found="Face"), 404
-    
+
     face = face_database_instance[face_id]
     logs_id = face.logs_id
     logs = log_database_instance[logs_id]
