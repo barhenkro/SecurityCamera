@@ -1,7 +1,7 @@
 from flask import Flask, Response, render_template, request, url_for, session, redirect, flash
 import cv2
 from threading import Thread
-from databases import face_database_instance, log_database_instance, image_database_instance
+from databases import face_database_instance, log_database_instance, image_database_instance, users_database_instance
 from databases.image_database import ImageDatabase
 from flask_utils import create_list_items, login_required
 import detection_utils
@@ -31,7 +31,7 @@ def login():
 
     if request.method == 'POST':
         # password correct
-        if request.form["password"] == "1234":
+        if users_database_instance.check_authentication(request.form["username"], request.form["password"]):
             session["logged"] = True
             next_site = request.args.get('next')
             # entered directly to login
@@ -40,7 +40,7 @@ def login():
 
             return redirect(next_site)
         # incorrect password
-        message = "incorrect password"
+        message = "incorrect username or password"
 
     if session["logged"]:
         return redirect(url_for('home'))
