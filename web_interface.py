@@ -181,7 +181,10 @@ def list_logs_by_face_id(face_id):
     face = face_database_instance[face_id]
     logs_id = face.logs_id
     logs = log_database_instance[logs_id]
-    items = [(logs[log_id].time_string, url_for('show_log', log_id=log_id)) for log_id in logs_id]
+    titles = [log.time_string for log in logs]
+    links = [url_for('show_log', log_id=log_id) for log_id in logs_id]
+
+    items = zip(titles, links)
     return render_template('list_page.html', title="Face's Logs", list_items=items)
 
 
