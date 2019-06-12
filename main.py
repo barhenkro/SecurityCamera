@@ -3,6 +3,7 @@ from camera import Camera
 from detection_process import DetectionProcess
 from multiprocessing import Pipe
 from threading import Thread
+import json
 
 
 def main():
@@ -11,7 +12,10 @@ def main():
     detection_process = DetectionProcess(child_connection)
     detection_process.start()
 
-    with Camera() as camera:
+    with open('settings.json', 'rb') as file_handler:
+        settings = json.load(file_handler)
+
+    with Camera(**settings['camera']) as camera:
         Thread(target=detect_frame, args=(camera, parent_connection)).start()
 
         for frame in camera.capture():
