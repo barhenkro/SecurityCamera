@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Add Face{% endblock %}
 {% block content %}
-  <form class="add_face" action="/action_page.php">
+  <form class="add_face" method=post enctype=multipart/form-data>
     Name
     <input type="text" class="field" name="face_name" placeholder="Enter Your Name">
     Image
