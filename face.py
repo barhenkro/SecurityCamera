@@ -40,5 +40,5 @@ class Face(object):
     def update_last_seen(self):
         self._last_seen = time.time()
 
-    def compare_face(self, unknown_face_encoding):
-        return True in face_recognition.compare_faces(self._face_encodings, unknown_face_encoding)
+    def compare_face(self, unknown_face_encoding, tolerance):
+        return True in face_recognition.compare_faces(self._face_encodings, unknown_face_encoding, tolerance)
