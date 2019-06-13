@@ -30,7 +30,7 @@ class FaceDetector(object):
 
                     registered_face = face_database_instance[face_id]
                     # known face
-                    if registered_face.compare_face(face_encoding):
+                    if registered_face.compare_face(face_encoding, 0.5):
                         recognized_face = True
 
                         if registered_face.time_since_last_seen >= 60:
