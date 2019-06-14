@@ -24,6 +24,10 @@ class Log(object):
     def face_id(self):
         return self._face_id
 
+    @face_id.setter
+    def face_id(self, value):
+        self._face_id = value
+
     @property
     def is_seen(self):
         return self._is_seen
