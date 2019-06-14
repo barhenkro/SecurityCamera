@@ -17,6 +17,12 @@ class LogDatabase(Database):
         self._data[log_id].is_seen = True
         self._write_data()
 
+    def change_face_id(self, logs_id_list, new_face_id):
+        self._read_data()
+        for log_id in logs_id_list:
+            self._data[log_id].face_id = new_face_id
+        self._write_data()
+
     @property
     def logs(self):
         self._read_data()
