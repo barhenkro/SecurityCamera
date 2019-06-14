@@ -42,3 +42,14 @@ class Face(object):
 
     def compare_face(self, unknown_face_encoding, tolerance):
         return True in face_recognition.compare_faces(self._face_encodings, unknown_face_encoding, tolerance)
+
+    def merge(self, another_face):
+        # combine encodings
+        self._face_encodings += another_face._face_encodings
+
+        # combine logs
+        self._logs_id += another_face.logs_id
+
+        # update last seen
+        if self._last_seen < another_face._last_seen:
+            self._last_seen = another_face._last_seen
