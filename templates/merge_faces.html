@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Merge Faces{% endblock %}
 {% block content %}
-<select form="merge-form" name="merge-from-face">
+<div class="add_face">
+    <select form="merge-form" name="merge-from-face">
     {% for face_id, face in faces.iteritems()%}
         <option value={{face_id}}> {{face.name}} </option>
     {% endfor %}
-</select>
-Merge To
-<select form="merge-form" name="merge-to-face">
+    </select>
+    <p>Merge To</p>
+    <select form="merge-form" name="merge-to-face">
     {% for face_id, face in faces.iteritems()%}
         <option value={{face_id}}> {{face.name}} </option>
     {% endfor %}
-</select>
+    </select>
 
-
- <form method="post" id="merge-form">
-     <input type="submit" value="Merge">
- </form>
+     <form method="post" id="merge-form">
+         <input type="submit" value="Merge">
+     </form>
+</div>
 {% endblock %}
