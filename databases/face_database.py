@@ -10,12 +10,17 @@ class FaceDatabase(Database):
     @property
     def faces(self):
         self._read_data()
-        return copy(self._data)
+        return copy([face for face in self._data if face is not None])
+
+    @property
+    def numbered_faces(self):
+        return {index: self._data[index] for index in range(self.__len__()) if self._data[index] is not None}
 
     @property
     def unnamed_faces(self):
         self._read_data()
-        return {index: self._data[index] for index in range(self.__len__()) if self._data[index].name is None}
+        return {index: self._data[index] for index in range(self.__len__()) if
+                self._data[index] is not None and self._data[index].name is None}
 
     def add_face(self, face_encoding, face_image_path, **kwargs):
         name = None
@@ -39,11 +44,22 @@ class FaceDatabase(Database):
     def compare_all_faces(self, face_encoding):
         self._read_data()
         for face in self._data:
-            if face.compare_face(face_encoding):
+            if face is not None and face.compare_face(face_encoding):
                 return True
         return False
 
     def register_log(self, face_id, log_id):
         self._read_data()
         self._data[face_id].register_log(log_id)
+        self._write_data()
+
+    def merge_faces(self, merge_from_id, merge_to_id):
+        """
+
+        :param merge_from_id: the id of the face that being merged
+        :param merge_to_id: the id of the face that dose the meging
+        :return:
+        """
+        self._read_data()
+        self._data[merge_to_id].merge(self._data[merge_from_id])
         self._write_data()
