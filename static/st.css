@@ -70,7 +70,7 @@
     border: 1px solid black;
 }
 
-.add_face input[class="field"] {
+.add_face input[type="text"], .add_face input[type="file"], .add_face select {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -95,11 +95,15 @@
   background-color: #262626;
 }
 
-form[class="add_face"]{
+.add_face{
   font-size: 25px;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+}
+
+.add_face p{
+    text-align: center;
 }
 
 .styled-info {
