@@ -29,6 +29,11 @@ class FaceDetector(object):
                 for face_id in range(len(face_database_instance)):
 
                     registered_face = face_database_instance[face_id]
+
+                    # face that was deleted or merged to another face and now doesn't exist
+                    if registered_face is None:
+                        continue
+
                     # known face
                     if registered_face.compare_face(face_encoding, 0.5):
                         recognized_face = True

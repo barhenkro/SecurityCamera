@@ -129,8 +129,8 @@ def add_face():
 @_app.route('/faces')
 @login_required
 def list_faces():
-    initial_string = url_for('list_faces') + '/'
-    items = create_list_items(face_database_instance.faces, lambda face: face.name, initial_string)
+    items = [(face.name, url_for('show_face', face_id=index)) for index, face in
+             face_database_instance.numbered_faces.iteritems()]
     return render_template('list_page.html', title="Faces", list_items=items)
 
 
