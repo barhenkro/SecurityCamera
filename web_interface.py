@@ -191,3 +191,21 @@ def list_logs_by_face_id(face_id):
 @_app.errorhandler(404)
 def not_found(eror):
     return render_template('error.html', not_found="Page"), 404
+
+
+@_app.route('/merge-faces', methods=['GET', 'POST'])
+@login_required
+def merge_faces():
+    if request.method == "POST":
+        # get ids
+        merge_from_id = int(request.form["merge-from-face"])
+        merge_to_id = int(request.form["merge-to-face"])
+
+        # merge manipulations
+        merge_from_logs_id = face_database_instance[merge_from_id].logs_id
+        face_database_instance.merge_faces(merge_from_id, merge_to_id)
+        log_database_instance.change_face_id(merge_from_logs_id, merge_to_id)
+        del face_database_instance[merge_from_id]
+
+    numbered_faces = face_database_instance.numbered_faces
+    return render_template('merge_faces.html', faces=numbered_faces)
