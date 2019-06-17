@@ -26,9 +26,10 @@ class LogDatabase(Database):
     @property
     def logs(self):
         self._read_data()
-        return self._data
+        return {index: self._data[index] for index in range(len(self._data)) if self._data[index] is not None}
 
     @property
     def unseen_faces(self):
         self._read_data()
-        return {index: self._data[index] for index in range(len(self._data)) if not self._data[index].is_seen}
+        return {index: self._data[index] for index in range(len(self._data)) if
+                self._data[index] is not None and not self._data[index].is_seen}
