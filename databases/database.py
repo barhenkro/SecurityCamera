@@ -48,7 +48,8 @@ class Database(object):
         elif type(item) is list:
             return [self._data[index] for index in item]
 
-    def __delitem__(self, key):
+    def __delitem__(self, keys):
         self._read_data()
-        self._data[key] = None
+        for key in keys:
+            self._data[key] = None
         self._write_data()
