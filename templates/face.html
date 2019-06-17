@@ -9,7 +9,11 @@
             <input type="submit" value="change name" >
         </form>
 
-        <img src="{{url_for('static',filename=face.image_path)}}">
+        <img src="{{url_for('static',filename=face.image_path)}}"> <br>
+
+        <form method="post">
+            <input type="submit" value="Delete" >
+        </form>
 
     </div>
 {% endblock %}
