@@ -49,6 +49,7 @@ class Face(object):
 
         # combine logs
         self._logs_id += another_face.logs_id
+        self._logs_id.sort()
 
         # update last seen
         if self._last_seen < another_face._last_seen:
