@@ -9,7 +9,7 @@ class ImageDatabase(Database):
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
     ROOT_FOLDER_NAME = 'static'
     FOLDER_NAME = 'images'
-    IMAGE_SIZE = float(100 * 100)
+    IMAGE_SIZE = float(150 * 150)
     FOLDER_PATH = os.path.join(ROOT_FOLDER_NAME, FOLDER_NAME)
 
     def __init__(self, file_name):
