@@ -66,3 +66,9 @@ class ImageDatabase(Database):
         os.unlink(temp_file_path)
 
         return converted_image
+
+    def __delitem__(self, paths):
+        self._read_data()
+        for path in paths:
+            os.remove(os.path.join(ImageDatabase.ROOT_FOLDER_NAME, path))
+        self._write_data()
