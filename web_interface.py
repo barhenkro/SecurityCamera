@@ -82,6 +82,10 @@ def show_face(face_id):
             # delete face
             face = face_database_instance[face_id]
             face_logs = face.logs_id
+            logs = log_database_instance[face_logs]
+            image_paths = [log.image_path for log in logs]
+
+            del image_database_instance[image_paths]
             del log_database_instance[face_logs]
             del face_database_instance[[face_id]]
             return redirect(url_for('home'))
