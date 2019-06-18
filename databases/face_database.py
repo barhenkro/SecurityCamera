@@ -44,7 +44,7 @@ class FaceDatabase(Database):
     def compare_all_faces(self, face_encoding):
         self._read_data()
         for face in self._data:
-            if face is not None and face.compare_face(face_encoding):
+            if face is not None and face.compare_face(face_encoding, 0.5):
                 return True
         return False
 
