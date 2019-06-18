@@ -2,12 +2,14 @@ from database import Database
 import os
 import cv2
 import tempfile
+import math
 
 
 class ImageDatabase(Database):
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
     ROOT_FOLDER_NAME = 'static'
     FOLDER_NAME = 'images'
+    IMAGE_SIZE = float(100 * 100)
     FOLDER_PATH = os.path.join(ROOT_FOLDER_NAME, FOLDER_NAME)
 
     def __init__(self, file_name):
@@ -25,12 +27,25 @@ class ImageDatabase(Database):
         image_name = "{}.jpg".format(self._data)
         image_path = os.path.join(ImageDatabase.FOLDER_PATH, image_name)
 
-        cv2.imwrite(image_path, image)
+        cv2.imwrite(image_path, self.__resize_image(image))
 
         self._data += 1
         self._write_data()
 
         return os.path.join(ImageDatabase.FOLDER_NAME, image_name)
+
+    @staticmethod
+    def __resize_image(image):
+        """
+
+        :param image: the image to resize
+        :return: an resized image. enlarged if smaller than desired else shrinked
+        """
+        current_size = image.shape[0] * image.shape[1]
+        factor = math.sqrt(ImageDatabase.IMAGE_SIZE / current_size)
+        new_size = (int(image.shape[0] * factor), int(image.shape[1] * factor))
+        interpolation = cv2.INTER_CUBIC if current_size < new_size else cv2.INTER_AREA
+        return cv2.resize(image, new_size, interpolation=interpolation)
 
     @staticmethod
     def is_allowed(file_name):
