@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{log.time_string}}{% endblock %}
+{% block content %}
+    <div class="styled-info">
+        Name: {{face_name}} <a href="{{url_for('show_face', face_id=log.face_id)}}">Face Info</a> <br>
+        Date: {{log.time_string}} <br>
+
+        <img src="{{url_for('static',filename=log.image_path)}}"><br>
+    </div>
+
+{% endblock %}

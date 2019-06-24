@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='login.css')}}">
+</head>
+<body class="align">
+
+<div class="grid">
+
+    <div id="login">
+
+        <h2><span class="fontawesome-lock"></span>Security Camera</h2>
+
+        <form action="#" method="POST">
+
+            <fieldset>
+
+
+                <p><input type="text" id="username" placeholder="username" name="username" autocomplete="off"></p>
+                <p><input type="password" id="password" placeholder="password" name="password"></p>
+                <p id="message"> {{message}} </p>
+
+                <p><input type="submit" value="Log In"></p>
+
+            </fieldset>
+
+        </form>
+
+
+    </div> <!-- end login -->
+
+</div>
+
+</body>
+</html>

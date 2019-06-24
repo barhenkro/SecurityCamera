@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Add Face{% endblock %}
+{% block content %}
+  <form class="add_face" method=post enctype=multipart/form-data>
+    Name
+    <input type="text" class="field" name="face_name" placeholder="Enter Your Name">
+    Image
+    <input type="file" class="field" name="file">
+    <input type="submit" value="Upload">
+  </form>
+{% with messages = get_flashed_messages() %}
+    {% for message in messages %}
+        {{message}}
+    {% endfor %}
+{% endwith %}
+{% endblock %}
